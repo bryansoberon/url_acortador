@@ -4,20 +4,20 @@ Este proyecto implementa un **acortador de URLs inteligente y resistente**, util
 
 ---
 
-ALUMNOS:
+- ALUMNOS:
 - BERNABE BRYAN SOBERON QUINTANA
 - FRANK GIANPIER ZEÑA VASQUEZ
-DOCENTE:
+- DOCENTE:
 - ALEX JAVIER VILLEGAS LAINAS
 - TLP "A"
 
-## 🚀 Endpoints
+Endpoints
 
-### 1. `POST /shorten`
+1. `POST /shorten`
 
 Genera una URL corta para una URL larga.
 
-#### Solicitud
+Solicitud
 
 ```json
 {
