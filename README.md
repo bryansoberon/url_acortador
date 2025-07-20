@@ -28,3 +28,10 @@ Respuesta
   "short_url": "http://localhost:8080/abc123"
 }
 ```
+
+2. GET /{short_code}
+Redirige al cliente a la URL larga correspondiente.
+
+Ejemplo: GET /abc123 → redirecciona a https://example.com/recurso/largo?query=param
+
+Si el código no existe, retorna 404 Not Found.
