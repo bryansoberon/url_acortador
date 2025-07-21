@@ -30,7 +30,6 @@ func (s *Store) Save(shortCode, longURL string) error {
 	return nil
 }
 
-// Obtiene la URL larga a partir del código corto
 func (s *Store) Get(shortCode string) (string, bool) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
