@@ -23,9 +23,6 @@ type ShortenResponse struct {
 	ShortURL string `json:"short_url"`
 }
 
-
-
-
 // POST /shorten → genera una URL corta
 func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 	var req ShortenRequest
@@ -34,14 +31,12 @@ func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generar código corto
 	code, err := h.Shortener.GenerateShortCode(req.LongURL)
 	if err != nil {
 		http.Error(w, "Falla al generar el codigo corto", http.StatusInternalServerError)
 		return
 	}
 
-	// Guardar en memoria
 	if err := h.Store.Save(code, req.LongURL); err != nil {
 		http.Error(w, "Short code collision", http.StatusInternalServerError)
 		return
@@ -51,7 +46,6 @@ func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(ShortenResponse{ShortURL: shortURL})
 }
 
-// GET /{short_code} → redirige a la URL original
 func (h *Handler) RedirectURL(w http.ResponseWriter, r *http.Request) {
 	code := chi.URLParam(r, "code")
 
@@ -61,6 +55,5 @@ func (h *Handler) RedirectURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Redirección 301 (permanente) justificada
 	http.Redirect(w, r, url, http.StatusMovedPermanently)
 }

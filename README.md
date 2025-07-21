@@ -52,7 +52,7 @@ Concurrencia
 
 
 
-🔁 Redirección HTTP: 301 vs 307
+Redirección HTTP: 301 vs 307
   Se utiliza HTTP 301 Moved Permanently porque:
 
     Los códigos generados son únicos y permanentes.
