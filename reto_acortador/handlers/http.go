@@ -23,18 +23,21 @@ type ShortenResponse struct {
 	ShortURL string `json:"short_url"`
 }
 
+
+
+
 // POST /shorten → genera una URL corta
 func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 	var req ShortenRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.LongURL == "" {
-		http.Error(w, "Invalid JSON or empty long_url", http.StatusBadRequest)
+		http.Error(w, "json invalido", http.StatusBadRequest)
 		return
 	}
 
 	// Generar código corto
 	code, err := h.Shortener.GenerateShortCode(req.LongURL)
 	if err != nil {
-		http.Error(w, "Failed to generate short code", http.StatusInternalServerError)
+		http.Error(w, "Falla al generar el codigo corto", http.StatusInternalServerError)
 		return
 	}
 

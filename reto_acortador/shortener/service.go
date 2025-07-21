@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	//"math/rand"
 	"strings"
 	"time"
 )
@@ -19,8 +18,8 @@ type Shortener struct {
 func NewShortener(store *Store, codeLength int) *Shortener {
 	return &Shortener{
 		store:     store,
-		maxRetries: 5,         // máximo 5 intentos para evitar bucle infinito
-		codeLength: codeLength, // longitud fija entre 6 y 8
+		maxRetries: 5,
+		codeLength: codeLength,
 	}
 }
 
@@ -39,13 +38,8 @@ func (s *Shortener) GenerateShortCode(longURL string) (string, error) {
 
 // Función privada: crea un código a partir del hash de la URL + tiempo + intento
 func (s *Shortener) createCode(longURL string, timestamp int64, salt int) string {
-	// Combinar URL + timestamp + intento
 	base := fmt.Sprintf("%s:%d:%d", longURL, timestamp, salt)
-
-	// Crear SHA1 hash
 	hash := sha1.Sum([]byte(base))
-
-	// Codificar a base64
 	encoded := base64.URLEncoding.EncodeToString(hash[:])
 
 	// Quitar caracteres no alfanuméricos y limitar longitud
