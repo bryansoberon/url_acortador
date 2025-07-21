@@ -29,7 +29,8 @@ Respuesta
 }
 ```
 
-2. GET /{short_code}
+2. `GET /{short_code}`
+
 Redirige al cliente a la URL larga correspondiente.
 
 Ejemplo: GET /abc123 → redirecciona a https://example.com/recurso/largo?query=param
