@@ -4,14 +4,16 @@ Este proyecto implementa un **acortador de URLs inteligente y resistente**, util
 
 ---
 
-- ALUMNOS:
+## ALUMNOS:
 - BERNABE BRYAN SOBERON QUINTANA
 - FRANK GIANPIER ZEÑA VASQUEZ
-- DOCENTE:
+## DOCENTE:
 - ALEX JAVIER VILLEGAS LAINAS
-- TLP "A"
+## CURSO: 
+TALLER DE LENGUAJES DE PROGRAMACIÓN "A"
+## USS
 
-Endpoints
+### Endpoints
 
 1. `POST /shorten`
 
