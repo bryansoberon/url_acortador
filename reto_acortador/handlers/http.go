@@ -24,11 +24,16 @@ type ShortenResponse struct {
 
 func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 	var req ShortenRequest
+	const maxURLLength = 200
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || !isValidURL(req.LongURL) {
 		http.Error(w, "URL larga inválida o malformada", http.StatusBadRequest)
 		return
 	}
-
+	if len(req.LongURL) > maxURLLength {
+		http.Error(w, "La URL larga excede el tamaño máximo permitido", http.StatusBadRequest)
+		return
+	}
 	code, err := h.Shortener.GenerateShortCode(req.LongURL)
 	if err != nil {
 		http.Error(w, "Falla al generar el código corto", http.StatusInternalServerError)
@@ -68,4 +73,5 @@ func isValidURL(url string) bool {
 		return false
 	}
 	return true
+
 }
