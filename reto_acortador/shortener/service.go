@@ -10,20 +10,19 @@ import (
 )
 
 type Shortener struct {
-	store     *Store
+	store      *Store
 	maxRetries int
 	codeLength int
 }
 
 func NewShortener(store *Store, codeLength int) *Shortener {
 	return &Shortener{
-		store:     store,
+		store:      store,
 		maxRetries: 5,
 		codeLength: codeLength,
 	}
 }
 
-// Genera un código corto único para una URL larga
 func (s *Shortener) GenerateShortCode(longURL string) (string, error) {
 	for i := 0; i < s.maxRetries; i++ {
 		code := s.createCode(longURL, time.Now().UnixNano(), i)
@@ -32,27 +31,21 @@ func (s *Shortener) GenerateShortCode(longURL string) (string, error) {
 			return code, nil
 		}
 	}
-
 	return "", errors.New("failed to generate unique short code after several attempts")
 }
 
-// Función privada: crea un código a partir del hash de la URL + tiempo + intento
 func (s *Shortener) createCode(longURL string, timestamp int64, salt int) string {
 	base := fmt.Sprintf("%s:%d:%d", longURL, timestamp, salt)
 	hash := sha1.Sum([]byte(base))
 	encoded := base64.URLEncoding.EncodeToString(hash[:])
-
-	// Quitar caracteres no alfanuméricos y limitar longitud
 	clean := cleanAlphanumeric(encoded)
 
 	if len(clean) < s.codeLength {
-		return clean // fallback
+		return clean
 	}
-
 	return clean[:s.codeLength]
 }
 
-// Quita caracteres que no sean a-z, A-Z o 0-9
 func cleanAlphanumeric(s string) string {
 	var builder strings.Builder
 	for _, c := range s {
@@ -62,4 +55,3 @@ func cleanAlphanumeric(s string) string {
 	}
 	return builder.String()
 }
-

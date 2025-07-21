@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"reto_acordator/shortener"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -13,27 +14,24 @@ type Handler struct {
 	Store     *shortener.Store
 }
 
-// JSON de entrada para POST /shorten
 type ShortenRequest struct {
 	LongURL string `json:"long_url"`
 }
 
-// JSON de salida
 type ShortenResponse struct {
 	ShortURL string `json:"short_url"`
 }
 
-// POST /shorten → genera una URL corta
 func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 	var req ShortenRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.LongURL == "" {
-		http.Error(w, "json invalido", http.StatusBadRequest)
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || !isValidURL(req.LongURL) {
+		http.Error(w, "URL larga inválida o malformada", http.StatusBadRequest)
 		return
 	}
 
 	code, err := h.Shortener.GenerateShortCode(req.LongURL)
 	if err != nil {
-		http.Error(w, "Falla al generar el codigo corto", http.StatusInternalServerError)
+		http.Error(w, "Falla al generar el código corto", http.StatusInternalServerError)
 		return
 	}
 
@@ -56,4 +54,18 @@ func (h *Handler) RedirectURL(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, url, http.StatusMovedPermanently)
+}
+
+// Validación simple para URLs no vacías, que empiecen con http:// o https:// y que tengan dominio
+func isValidURL(url string) bool {
+	if url == "" {
+		return false
+	}
+	if !(strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")) {
+		return false
+	}
+	if len(url) <= len("https://") {
+		return false
+	}
+	return true
 }

@@ -21,9 +21,8 @@ func (s *Store) Save(shortCode, longURL string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	// Validar si el código ya existe
 	if _, exists := s.data[shortCode]; exists {
-		return errors.New("short code already exists")
+		return errors.New("codigo corto ya existe")
 	}
 
 	s.data[shortCode] = longURL
